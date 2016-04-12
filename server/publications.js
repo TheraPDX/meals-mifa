@@ -1,3 +1,4 @@
+<<<<<<< refs/remotes/origin/master
 Meteor.publish("directory", function () {
   var user = Meteor.users.findOne(this.userId);
   if (Roles.userIsInRole(this.userId, 'admin')){
@@ -43,6 +44,40 @@ Meteor.publish( 'clients', function(thisRoute){
           this.ready();
     };
   }
+=======
+Meteor.publish( 'clients', function(thisRoute){
+  check( thisRoute, Number);
+    if (!this.userId) {
+        this.ready();
+        return;
+    }
+
+    //get email address
+    var user = Meteor.users.findOne(this.userId);
+    //check if they can see routes:
+    var myRoutes = Routes.find(
+    	{
+    		email: user.emails[0].address
+		},
+		{
+			authorizedRoute: parseInt(thisRoute)
+		}
+	).fetch();
+    
+    //make sure the above function returned a row
+    if(myRoutes.length > 0){
+       	return Clients.find(
+        	{                                      
+           		route: thisRoute
+        	}, 
+        	{ 
+           		sort: { seq: 1} 
+       		}
+
+   	)}else{
+          //throw 401 exception
+        };
+>>>>>>> Inital Load
 });
 
 Meteor.publish( 'routes', function(){
@@ -54,9 +89,14 @@ Meteor.publish( 'routes', function(){
     return Routes.find(
       {
         email: user.emails[0].address
+<<<<<<< refs/remotes/origin/master
       },
       {sort:{authorizedroute: 1}, reactive:true}
     );
+=======
+      });
+
+>>>>>>> Inital Load
 });
 
 Meteor.publish("usersForRoute", function () {
@@ -77,6 +117,7 @@ Meteor.publish( 'routesMaster', function(){
     return;
   }
 
+<<<<<<< refs/remotes/origin/master
 });
 Meteor.publish( 'clientMaster', function(){
   if (!this.userId) {
@@ -91,4 +132,6 @@ Meteor.publish( 'clientMaster', function(){
     return;
   }
 
+=======
+>>>>>>> Inital Load
 });

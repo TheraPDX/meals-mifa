@@ -6,14 +6,19 @@ BrowserPolicy.content.allowFontDataUrl();
 
 var trusted = [
   '*.googleapis.com',
+<<<<<<< refs/remotes/origin/master
   '*.bootstrapcdn.com',
   '*.gstatic.com',
   '*.google.com'
+=======
+  '*.bootstrapcdn.com'
+>>>>>>> Inital Load
 ];
 
 _.each(trusted, function(origin) {
   origin = "https://" + origin;
   BrowserPolicy.content.allowOriginForAll(origin);
+<<<<<<< refs/remotes/origin/master
 });
 
 var nontrusted = [
@@ -24,4 +29,6 @@ var nontrusted = [
 _.each(nontrusted, function(origin) {
   origin = "http://" + origin;
   BrowserPolicy.content.allowOriginForAll(origin);
+=======
+>>>>>>> Inital Load
 });

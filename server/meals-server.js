@@ -1,3 +1,4 @@
+<<<<<<< refs/remotes/origin/master
 //Account settings
 forbidClientAccountCreation: true; 
 Accounts.emailTemplates.siteName = "MIFA Meals Companion";
@@ -37,12 +38,28 @@ Meteor.methods({
             throw new Meteor.Error('401', 'Unauthorized');
     	}else{
 			Roles.removeUsersFromRoles(userId, ['admin'])
+=======
+var Tget = Meteor.wrapAsync(HTTP.get)
+forbidClientAccountCreation: true; 
+//manage account creation
+
+Meteor.methods({
+	addToAdminGroup: function(){
+		if (! Meteor.userId()) {
+      		throw new Meteor.Error('not-authorized');
+    	};
+		if (Meteor.user()){
+			Roles.addUsersToRoles(Meteor.userId(), ['admin'])
+>>>>>>> Inital Load
 		}
 	}
 });
 
 Accounts.onCreateUser(function(options, user) {
+<<<<<<< refs/remotes/origin/master
    check(user, Object);
+=======
+>>>>>>> Inital Load
    // Use provided profile in options, or create an empty object
    user.profile = options.profile || {};
    // Assigns first and last names to the newly created user object
@@ -55,10 +72,13 @@ Accounts.onCreateUser(function(options, user) {
 
 Meteor.methods({
 	updateProfile: function(userID, firstName, lastName, phoneNumber){
+<<<<<<< refs/remotes/origin/master
 		check(userID, String);
 		check(firstName, String);
 		check(lastName, String);
 		check(phoneNumber, String);
+=======
+>>>>>>> Inital Load
 		if (! Meteor.userId()) {
       		throw new Meteor.Error('not-authorized');
     	};
@@ -77,11 +97,21 @@ Meteor.methods({
 	updateDeliveryStatus: function(clientID, outcome, emailAddress){
 		check(clientID, String);
 		check(outcome, String);
+<<<<<<< refs/remotes/origin/master
 		check(emailAddress, String);
 	    if (! Meteor.userId()) {
       		throw new Meteor.Error('not-authorized');
     	};
 		Clients.update({ _id: clientID}, {
+=======
+	    if (! Meteor.userId()) {
+      		throw new Meteor.Error('not-authorized');
+    	};
+		// do this because mongo can't handle a simple update with a key like every other database ever... boo...
+		var ObjectID = require('mongodb').ObjectID;
+		var stupidMongoId = ObjectID.createFromHexString(clientID);
+		Clients.update({ _id: stupidMongoId}, {
+>>>>>>> Inital Load
 				$set: {deliveryStatus: outcome,
 						updatedBy: emailAddress}
 		})
@@ -89,11 +119,19 @@ Meteor.methods({
 });
 Meteor.methods({
     createAccount: function(emailAddress, firstName, lastName, phoneNumber, password){
+<<<<<<< refs/remotes/origin/master
 		check(emailAddress, String);
 		check(firstName, String);
 		check(lastName, String);
 		check(phoneNumber, String);
 		check(password, Object);
+=======
+		//format phone number
+      	if (! Meteor.userId()) {
+      		throw new Meteor.Error('not-authorized');
+    	};
+
+>>>>>>> Inital Load
       	var phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
       	phoneNumber = phoneNumber.replace(phoneRegex, "($1) $2-$3");
       	Accounts.createUser({
@@ -102,8 +140,12 @@ Meteor.methods({
 	        lastName: lastName,
 	        phoneNumber: phoneNumber,
 	        password: password});
+<<<<<<< refs/remotes/origin/master
     		}      
     	//Accounts.sendVerificationEmail( user._id );
+=======
+    }      
+>>>>>>> Inital Load
 });
 
 Meteor.methods({
@@ -157,6 +199,7 @@ Meteor.methods({
 
         console.log(jsonUrl);
 		//get the optimized waypoints
+<<<<<<< refs/remotes/origin/master
 		//var Tget = Meteor.wrapAsync(HTTP.get)
 		//var arrWayPoints = Tget(jsonUrl).data.routes[0].waypoint_order
 
@@ -180,12 +223,31 @@ Meteor.methods({
 				}
 			}
 		});		
+=======
+		var arrWayPoints = Tget(jsonUrl).data.routes[0].waypoint_order
+		
+		//loop through google's optimized way point and update the sequence in the DB
+		
+		i = 0;
+
+		while (i<arrWayPoints.length) {
+    	//save the new sequence ids to the mongodb
+			Clients.update(clients[i]._id, {
+				$set: {seq: arrWayPoints[i]+1}
+			
+			});
+				i++;
+			}
+>>>>>>> Inital Load
     }
 });
 
 Meteor.methods({
         getRoutesForUser: function(emailAddress){
+<<<<<<< refs/remotes/origin/master
         	check(emailAddress, String);
+=======
+>>>>>>> Inital Load
         	if (! Meteor.userId()) {
       			throw new Meteor.Error('not-authorized');
 			};
@@ -195,6 +257,7 @@ Meteor.methods({
 });
 
 Meteor.methods({
+<<<<<<< refs/remotes/origin/master
     reloadClients: function(clientsArray){
     	check(clientsArray, Array);
     	//Collection to hold authorized routes
@@ -363,3 +426,15 @@ saveClient = function(client){
 		});
 	}
 }
+=======
+    checkLogin: function(){
+        if(this.userId===null){
+            return false;
+        }else{
+            return true;
+        }
+    }
+});
+
+    
+>>>>>>> Inital Load

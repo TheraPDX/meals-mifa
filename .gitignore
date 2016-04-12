@@ -19,8 +19,11 @@
 *.rar
 *.tar
 *.zip
+<<<<<<< refs/remotes/origin/master
 node_modules
 
+=======
+>>>>>>> Inital Load
 
 # Logs and databases #
 ######################
@@ -38,3 +41,7 @@ node_modules
 .Trashes
 ehthumbs.db
 Thumbs.db
+<<<<<<< refs/remotes/origin/master
+=======
+.meteor
+>>>>>>> Inital Load
