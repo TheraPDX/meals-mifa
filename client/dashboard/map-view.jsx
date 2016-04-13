@@ -1,0 +1,1 @@
+//This is an interactive map that subscribes to the client collection and plots coordinates as data is updated.

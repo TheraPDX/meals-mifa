@@ -77,7 +77,7 @@ CustomizeRoute = React.createClass({
 		//call the server side API
 		Meteor.call("optimizeRoute", parseInt(this.props.id), start, destination, function(error, result){
 			if(error){
-				Bert.alert('Error Optimizing Route:' + error.reason);
+				Bert.alert('Error Optimizing Route:' + error.reason, 'danger');
 			}else{
 				Bert.alert('Your route has been optimized.', 'success', 'growl-top-left');
 			}

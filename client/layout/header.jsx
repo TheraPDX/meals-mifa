@@ -28,6 +28,7 @@ Header = React.createClass({
             <MenuItem hash="/logout">Logout</MenuItem>
             <MenuItem hash="/about">About</MenuItem>
             <MenuItem hash="/manage-routes">Manage Routes</MenuItem>
+            <MenuItem hash="/import-clients">Import Clients</MenuItem>
           </Menu>
 		</header>
   	)

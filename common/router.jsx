@@ -77,6 +77,12 @@ allowAuthenticated.route('/customize-route/:routeId', {
         ReactLayout.render(MainLayout, { content: <CustomizeRoute id={params.routeId}/> });
     }
 });
+allowAuthenticated.route('/import-clients', {
+    action: function(params, queryParams) {
+        ReactLayout.render(MainLayout, { content: <ImportClients /> });
+    }
+});
+
 
 allowAuthenticated.route('/clients/:routeId', {
     action: function(params, queryParams) {

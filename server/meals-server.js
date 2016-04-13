@@ -14,6 +14,8 @@ Meteor.methods({
 });
 
 Accounts.onCreateUser(function(options, user) {
+   check(options, Array);
+   check(user, Object);
    // Use provided profile in options, or create an empty object
    user.profile = options.profile || {};
    // Assigns first and last names to the newly created user object
@@ -26,6 +28,10 @@ Accounts.onCreateUser(function(options, user) {
 
 Meteor.methods({
 	updateProfile: function(userID, firstName, lastName, phoneNumber){
+		check(userID, String);
+		check(firstName, String);
+		check(lastName, String);
+		check(phoneNumber, String);
 		if (! Meteor.userId()) {
       		throw new Meteor.Error('not-authorized');
     	};
@@ -44,6 +50,7 @@ Meteor.methods({
 	updateDeliveryStatus: function(clientID, outcome, emailAddress){
 		check(clientID, String);
 		check(outcome, String);
+		check(emailAddress, String);
 	    if (! Meteor.userId()) {
       		throw new Meteor.Error('not-authorized');
     	};
@@ -58,11 +65,14 @@ Meteor.methods({
 });
 Meteor.methods({
     createAccount: function(emailAddress, firstName, lastName, phoneNumber, password){
-		//format phone number
+		check(emailAddress, String);
+		check(firstName, String);
+		check(lastName, String);
+		check(phoneNumber, String);
+		check(password, String);
       	if (! Meteor.userId()) {
       		throw new Meteor.Error('not-authorized');
     	};
-
       	var phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
       	phoneNumber = phoneNumber.replace(phoneRegex, "($1) $2-$3");
       	Accounts.createUser({
@@ -144,6 +154,7 @@ Meteor.methods({
 
 Meteor.methods({
         getRoutesForUser: function(emailAddress){
+        	check(emailAddress, String);
         	if (! Meteor.userId()) {
       			throw new Meteor.Error('not-authorized');
 			};
@@ -153,77 +164,102 @@ Meteor.methods({
 });
 
 Meteor.methods({
-    checkLogin: function(){
-        if(this.userId===null){
+    reloadClients: function(clientsArray){
+    	check(clientsArray, Array);
+        if(Roles.userIsInRole(this.userId, 'admin')){
             return false;
         }else{
-            return true;
-        }
+        	//first archive current collection in history
+
+        	//then remove all clients from clients collection
+			Clients.remove({})
+        	//now insert all new clients
+        	for (let i=0; i < clientsArray.length; i++){
+        		let client=clientsArray[i];
+
+        		Clients.insert({
+        			route: parseInt(client.route),
+        			fname: client.fname,
+        			lname: client.lname,
+        			address: client.address,
+        			city: client.city,
+        			state: client.state,
+        			zip: client.zip,
+        			home: client.home,
+        			mobile: client.mobile,
+        			seq: parseInt(client.seq),
+        			meal1: client.meal1,
+        			meal2: client.meal2,
+        			beverage: client.beverage,
+        			delivered: false,
+				    uploadedBy: Meteor.user().emails[0].address,
+				    uploadedOn: new Date()
+
+        		})
+        	}
+    	}
     }
 });
 
+    				
+
 Meteor.methods({
     addUserToRoute: function(userId, route){
-	    //check user
-	    if (! Meteor.userId()) {
-      		throw new Meteor.Error('not-authorized');
-    	}else{
-			//check admin rights
-			if(Roles.userIsInRole(this.userId, 'admin')){
-				//add to roles table
-				Roles.addUsersToRoles(userId, route)
-				
-				//get the user object for the user
-			    var user = Meteor.users.findOne(userId);
-    			//check if they have this route already
-    			var myRoutes = Routes.find(
-    				{
-    					email: user.emails[0].address
-					},
+	    check(userId, String);
+	    check(parseInt(route), Number);
+		//check admin rights
+		if(Roles.userIsInRole(this.userId, 'admin')){
+			//add to roles table
+			Roles.addUsersToRoles(userId, route)
+			
+			//get the user object for the user
+		    var user = Meteor.users.findOne(userId);
+			//check if they have this route already
+			var myRoutes = Routes.find(
+				{
+					email: user.emails[0].address
+				},
+				{
+					authorizedRoute: parseInt(route)
+				}).fetch();
+			if(myRoutes.length==0){
+				//insert the row
+				Routes.insert(
 					{
-						authorizedRoute: parseInt(route)
-					}).fetch();
-    			if(myRoutes.length==0){
-    				//insert the row
-    				Routes.insert(
-    					{
-					    "email" : user.emails[0].address,
-					    "authorizedroute" : route,
-					    "authorizedBy": Meteor.user().emails[0].address,
-					    "authorizedOn": new Date()
-    				})
-    			}
+				    "email" : user.emails[0].address,
+				    "authorizedroute" : route,
+				    "authorizedBy": Meteor.user().emails[0].address,
+				    "authorizedOn": new Date()
+				})
 			}
-    	}
+		}
     }
 });
 Meteor.methods({
     removeUserFromRoute: function(userId, route){
 	    //check user
-	    if (! Meteor.userId()) {
-      		throw new Meteor.Error('not-authorized');
-    	}else{
-			//check admin rights
-			if(Roles.userIsInRole(this.userId, 'admin')){
-				//remove the role from roles
-				Roles.removeUsersFromRoles(userId, route)
-				
-				//remove the user from the routes collection
-				//get the user object for the user
-			    var user = Meteor.users.findOne(userId);
-    			//check if they have this route already
-    			var myRoutes = Routes.find(
-    				{
-    					email: user.emails[0].address
-					},
-					{
-						authorizedRoute: parseInt(route)
-					}).fetch();
-    			if(myRoutes.length>0){
-    				//delete the row
-    				Routes.remove(myRoutes[0]._id);
-    			}
+	   	check(userId, String);
+	    check(parseInt(route), Number);
+    	//check admin rights
+		if(Roles.userIsInRole(this.userId, 'admin')){
+			//remove the role from roles
+			Roles.removeUsersFromRoles(userId, route)
+			
+			//remove the user from the routes collection
+			//get the user object for the user
+		    var user = Meteor.users.findOne(userId);
+			//check if they have this route already
+			var myRoutes = Routes.find(
+				{
+					email: user.emails[0].address
+				},
+				{
+					authorizedRoute: parseInt(route)
+				}).fetch();
+			if(myRoutes.length>0){
+				//delete the row
+				Routes.remove(myRoutes[0]._id);
 			}
-    	}
+		}
     }
 });
