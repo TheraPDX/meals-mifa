@@ -162,4 +162,68 @@ Meteor.methods({
     }
 });
 
-    
+Meteor.methods({
+    addUserToRoute: function(userId, route){
+	    //check user
+	    if (! Meteor.userId()) {
+      		throw new Meteor.Error('not-authorized');
+    	}else{
+			//check admin rights
+			if(Roles.userIsInRole(this.userId, 'admin')){
+				//add to roles table
+				Roles.addUsersToRoles(userId, route)
+				
+				//get the user object for the user
+			    var user = Meteor.users.findOne(userId);
+    			//check if they have this route already
+    			var myRoutes = Routes.find(
+    				{
+    					email: user.emails[0].address
+					},
+					{
+						authorizedRoute: parseInt(route)
+					}).fetch();
+    			if(myRoutes.length==0){
+    				//insert the row
+    				Routes.insert(
+    					{
+					    "email" : user.emails[0].address,
+					    "authorizedroute" : route,
+					    "authorizedBy": Meteor.user().emails[0].address,
+					    "authorizedOn": new Date()
+    				})
+    			}
+			}
+    	}
+    }
+});
+Meteor.methods({
+    removeUserFromRoute: function(userId, route){
+	    //check user
+	    if (! Meteor.userId()) {
+      		throw new Meteor.Error('not-authorized');
+    	}else{
+			//check admin rights
+			if(Roles.userIsInRole(this.userId, 'admin')){
+				//remove the role from roles
+				Roles.removeUsersFromRoles(userId, route)
+				
+				//remove the user from the routes collection
+				//get the user object for the user
+			    var user = Meteor.users.findOne(userId);
+    			//check if they have this route already
+    			var myRoutes = Routes.find(
+    				{
+    					email: user.emails[0].address
+					},
+					{
+						authorizedRoute: parseInt(route)
+					}).fetch();
+    			if(myRoutes.length>0){
+    				//delete the row
+    				Routes.remove(myRoutes[0]._id);
+    			}
+			}
+    	}
+    }
+});

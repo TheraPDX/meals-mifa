@@ -36,7 +36,7 @@ ManageRoute = React.createClass({
             </div>
             <div className='form-group'>
               <br />
-                <ManageUserList clients={this.data.usersToManage} />
+                <ManageUserList usersForRoute={this.data.usersForRoute} routeId={this.props.id}/>
             </div>
           </div>  
           </span>

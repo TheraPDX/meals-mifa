@@ -2,8 +2,8 @@ ManageUserList = React.createClass({
   render() {
     return (
       <div className='form-group'>
-            {this.data.usersToManage.map( ( _id, index ) => {
-              return <ManageUserItem key={index} usersToManage={_id} />;
+            {this.props.usersForRoute.map( ( _id, index ) => {
+              return <ManageUserItem key={index} usersForRoute={_id} routeId={this.props.routeId}/>;
             })}
       </div>
     );
