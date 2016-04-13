@@ -166,7 +166,8 @@ Meteor.methods({
 Meteor.methods({
     reloadClients: function(clientsArray){
     	check(clientsArray, Array);
-        if(Roles.userIsInRole(this.userId, 'admin')){
+        if(!Roles.userIsInRole(this.userId, 'admin')){
+        	console.log('kicked out')
             return false;
         }else{
         	//first archive current collection in history
@@ -176,26 +177,27 @@ Meteor.methods({
         	//now insert all new clients
         	for (let i=0; i < clientsArray.length; i++){
         		let client=clientsArray[i];
+        		if(client.route){
+	        		Clients.insert({
+	        			route: parseInt(client.route),
+	        			fname: client.fname,
+	        			lname: client.lname,
+	        			address: client.address,
+	        			city: client.city,
+	        			state: client.state,
+	        			zip: client.zip,
+	        			home: client.home,
+	        			mobile: client.mobile,
+	        			seq: parseInt(client.seq),
+	        			meal1: client.meal1,
+	        			meal2: client.meal2,
+	        			beverage: client.beverage,
+	        			delivered: false,
+					    uploadedBy: Meteor.user().emails[0].address,
+					    uploadedOn: new Date()
 
-        		Clients.insert({
-        			route: parseInt(client.route),
-        			fname: client.fname,
-        			lname: client.lname,
-        			address: client.address,
-        			city: client.city,
-        			state: client.state,
-        			zip: client.zip,
-        			home: client.home,
-        			mobile: client.mobile,
-        			seq: parseInt(client.seq),
-        			meal1: client.meal1,
-        			meal2: client.meal2,
-        			beverage: client.beverage,
-        			delivered: false,
-				    uploadedBy: Meteor.user().emails[0].address,
-				    uploadedOn: new Date()
-
-        		})
+	        		})
+	        	}
         	}
     	}
     }

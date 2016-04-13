@@ -3,7 +3,7 @@
 //Users can select replace or append. Replace dumps the client list in the delivery history collection
 ImportClients = React.createClass({
   render() {
-    if(!Roles.userIsInRole(Meteor.user._id, 'admin')){
+    if(!Roles.userIsInRole(Meteor.user()._id, 'admin')){
       Bert.alert('You must be an admin to import clients.', 'danger');
       return(
         <div className="row">
