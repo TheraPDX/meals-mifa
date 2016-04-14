@@ -6,7 +6,8 @@ BrowserPolicy.content.allowFontDataUrl();
 
 var trusted = [
   '*.googleapis.com',
-  '*.bootstrapcdn.com'
+  '*.bootstrapcdn.com',
+  '*.gstatic.com'
 ];
 
 _.each(trusted, function(origin) {

@@ -64,3 +64,17 @@ Meteor.publish( 'routesMaster', function(){
   }
 
 });
+Meteor.publish( 'clientMaster', function(){
+  if (!this.userId) {
+        this.ready();
+        return;
+  }
+  //check admin and if so, return all routes
+  if (Roles.userIsInRole(this.userId, 'admin')){
+    return Clients.find({});
+  }else{
+    this.ready();
+    return;
+  }
+
+});

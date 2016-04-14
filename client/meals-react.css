@@ -5,6 +5,11 @@
 html {
   font-size: 18px;
 }
+.map-container {
+  width: 800px;
+  max-width: 100%;
+  height: 500px;
+}
 /* Change color & bg color of selected live text */
 *::selection {
   background-color: #8cc63f;

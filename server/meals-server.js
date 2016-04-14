@@ -213,27 +213,14 @@ Meteor.methods({
 		if(Roles.userIsInRole(this.userId, 'admin')){
 			//add to roles table
 			Roles.addUsersToRoles(userId, route)
-			
-			//get the user object for the user
-		    var user = Meteor.users.findOne(userId);
-			//check if they have this route already
-			var myRoutes = Routes.find(
+			var user = Meteor.users.findOne(userId);
+			Routes.insert(
 				{
-					email: user.emails[0].address
-				},
-				{
-					authorizedRoute: parseInt(route)
-				}).fetch();
-			if(myRoutes.length==0){
-				//insert the row
-				Routes.insert(
-					{
-				    "email" : user.emails[0].address,
-				    "authorizedroute" : route,
-				    "authorizedBy": Meteor.user().emails[0].address,
-				    "authorizedOn": new Date()
-				})
-			}
+			    "email" : user.emails[0].address,
+			    "authorizedroute" : route,
+			    "authorizedBy": Meteor.user().emails[0].address,
+			    "authorizedOn": new Date()
+			})
 		}
     }
 });

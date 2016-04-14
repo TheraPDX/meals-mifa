@@ -111,3 +111,10 @@ allowAuthenticated.route('/manage-route/:routeId', {
         ReactLayout.render(MainLayout, { content: <ManageRoute id={params.routeId}/> });
     }
 });
+
+allowAuthenticated.route('/map-view', {
+    action: function(params, queryParams) {
+        ReactLayout.render(MainLayout, { content: <MapView /> });
+    }
+});
+
