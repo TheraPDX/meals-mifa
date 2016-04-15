@@ -79,7 +79,7 @@ ManageProfile = React.createClass({
                   <input type="text" name="phoneNumber" className="form-control" defaultValue={Meteor.user().profile? Meteor.user().profile.phoneNumber : ''} />
                 </div>
                 <div className="form-group">
-                  <input type="submit" className="btn btn-success" value="Update My Info" />
+                  <input type="submit" className="button" value="Update My Info" />
                 </div>
               </form>
             </div>

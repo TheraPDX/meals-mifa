@@ -61,8 +61,8 @@ Route = React.createClass({
 
     return (
     <div className="form-group">
-    <button value={this.props.route.authorizedroute} className='btn btn-success form-control' onClick={this.gotoRoute}>
-      Route: {this.props.route.authorizedroute}
+    <button value={this.props.route.authorizedroute} className='button' onClick={this.gotoRoute}>
+      {'Route: ' + this.props.route.authorizedroute}
     </button>
     </div>
     );

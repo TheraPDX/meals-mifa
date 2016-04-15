@@ -48,10 +48,8 @@ MealClients = React.createClass({
               <p>You can start deliverying your route with turn by turn directions by tapping the address of each client. 
               To optimize your right to start or finish in a location different from MIFA's default, tap the 'Customize my Route' button.</p>
             </div>
-            <div className="col-xs-12">
-                <button className='form-control btn btn-success' onClick={this.optimizeRoute}>
-                  Customize my Route
-                </button> 
+            <div className="col-xs-12 paddedDiv">
+                <button className='btn button' onClick={this.optimizeRoute}>Customize my Route</button> 
             </div>
             <div className='form-group'>
               <br />
@@ -145,12 +143,12 @@ Client = React.createClass({
                     Special Instructions: {this.props.client.instructions}
                 </div>
                 <div className='col-xs-6 col-sm-3 col-md-2'>
-              <button className='btn btn-warning pull-left' name='nothome' value={this.props.client._id} onClick={this.updateDeliveryStatus}>
+              <button className='btn buttonNotHome pull-left' name='nothome' value={this.props.client._id} onClick={this.updateDeliveryStatus}>
                         Undo
                     </button>
                 </div>
                 <div className='col-xs-6 col-sm-3 col-md-2'>    
-                    <button className='btn btn-success' name='complete' value={this.props.client._id} onClick={this.updateDeliveryStatus}>
+                    <button className='btn button' name='complete' value={this.props.client._id} onClick={this.updateDeliveryStatus}>
                         Complete
                     </button>
                 </div>
@@ -208,12 +206,12 @@ Client = React.createClass({
                     Special Instructions: {this.props.client.instructions}
                 </div>
                 <div className='col-xs-6 col-sm-3 col-md-2'>
-              <button className='btn btn-warning pull-left' name='nothome' value={this.props.client._id} onClick={this.updateDeliveryStatus}>
+              <button className='btn buttonNotHome pull-left' name='nothome' value={this.props.client._id} onClick={this.updateDeliveryStatus}>
                         Not Home
                     </button>
                 </div>
                 <div className='col-xs-6 col-sm-3 col-md-2'>    
-                    <button className='btn btn-success' name='complete' value={this.props.client._id} onClick={this.updateDeliveryStatus}>
+                    <button className='btn button' name='complete' value={this.props.client._id} onClick={this.updateDeliveryStatus}>
                         Undo
                     </button>
                 </div>
@@ -270,12 +268,12 @@ Client = React.createClass({
                   Special Instructions: {this.props.client.instructions}
               </div>
               <div className='col-xs-6 col-sm-3 col-md-2'>
-            <button className='btn btn-warning pull-left' name='nothome' value={this.props.client._id} onClick={this.updateDeliveryStatus}>
+            <button className='btn buttonNotHome pull-left' name='nothome' value={this.props.client._id} onClick={this.updateDeliveryStatus}>
                       Not Home
                   </button>
               </div>
               <div className='col-xs-6 col-sm-3 col-md-2'>    
-                  <button className='btn btn-success' name='complete' value={this.props.client._id} onClick={this.updateDeliveryStatus}>
+                  <button className='btn button' name='complete' value={this.props.client._id} onClick={this.updateDeliveryStatus}>
                       Complete
                   </button>
               </div>

@@ -1,31 +1,46 @@
-Menu = React.createClass({
-    getInitialState: function() {
-        return {
-            visible: false  
-        };
-    },
+Menu = require('react-burger-menu').slide;
 
-    show: function() {
-        this.setState({ visible: true });
-        document.addEventListener("click", this.hide.bind(this));
-    },
-
-    hide: function() {
-        document.removeEventListener("click", this.hide.bind(this));
-        this.setState({ visible: false });
-    },
-
-    render: function() {
-        return <div className="menu brand-wrap" >
-            <div className={(this.state.visible ? "visible " : "") + this.props.alignment}>{this.props.children}</div>
-        </div>;
+MealsMenu = React.createClass({
+  mixins: [ReactMeteorData],
+  getMeteorData() {
+    return {
+      user: Meteor.user()
     }
-});
-MenuItem = React.createClass({
-    handleClick(){
-        FlowRouter.go(this.props.hash);
-    },
+  },
     render: function() {
-        return <div className="menu-item brand-wrap" onClick={this.handleClick}>{this.props.children}</div>;
+        //check admin
+        if(!Meteor.user()){
+            return (
+              <Menu width={ 200 } right>
+                <a id="routes" className="menu-item" href="/routes">My Routes</a>
+                <a id="profile" className="menu-item" href="/manage-profile">My Profile</a>
+                <a id="contact" className="menu-item" href="/about">About</a>
+                <a id="contact" className="menu-item" href="/logout">Logout</a>
+              </Menu>
+            );
+        }else{
+
+            if(Roles.userIsInRole(this.data.user._id, 'admin')){
+                return (
+                    <Menu width={ 200 } right>
+                        <a id="routes" className="menu-item" href="/routes">My Routes</a>
+                        <a id="profile" className="menu-item" href="/manage-profile">My Profile</a>
+                        <a id="contact" className="menu-item" href="/about">About this App</a>
+                        <a id="profile" className="menu-item" href="/manage-routes">Manage Routes</a>
+                        <a id="contact" className="menu-item" href="/import-clients">Import Clients</a>
+                        <a id="contact" className="menu-item" href="/logout">Logout</a>
+                    </Menu>
+                );
+            }else{
+                return(
+                    <Menu width={ 200 } right>
+                        <a id="routes" className="menu-item" href="/routes">My Routes</a>
+                        <a id="profile" className="menu-item" href="/manage-profile">My Profile</a>
+                        <a id="contact" className="menu-item" href="/about">About</a>
+                        <a id="contact" className="menu-item" href="/logout">Logout</a>
+                    </Menu>
+                );
+            }
+        }
     }
 });

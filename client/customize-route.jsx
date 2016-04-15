@@ -19,6 +19,10 @@ CustomizeRoute = React.createClass({
 		coordinates: ''
 		};
 	},
+	handleCancel(event){
+		event.preventDefault();
+		FlowRouter.go('/clients/' + this.props.id);
+	},
 
 	handleSubmit(event){
 	    event.preventDefault();
@@ -161,10 +165,7 @@ CustomizeRoute = React.createClass({
 	        </div>
 	        <div className="row">
 	            <div className="col-xs-12">
-	            	<button className="btn cancel btn-success pull-left">
-		                Cancel
-		            </button>
-	                <input type="submit" id="optimize-button" className="btn btn-success pull-right" value="Recalculate my Route" />
+	                <input type="submit" id="optimize-button" className="button pull-right" value="Recalculate my Route" />
 	            </div>
 	        </div>
 	        <div className="row">
