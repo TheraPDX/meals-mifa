@@ -52,7 +52,7 @@ Login = React.createClass({
                         <input type='password' name='password' className='form-control' placeholder='Password' />
                     </div>
                     <div className='form-group'>
-                        <input type='submit' className='btn button' value='Login' />
+                        <input type='submit' className='button' value='Login' />
                     </div>
                     <div className='form-group'>
                         <a className='pull-right' href='/recover-password'>

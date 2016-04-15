@@ -100,6 +100,9 @@ Client = React.createClass({
       case 'nothome':
         return(
           <div>
+              <div className='col-xs-12'>
+                  <hr />
+              </div>
             <div className='nothome col-xs-12'>
                 <div className='col-xs-6 col-sm-3 col-md-2'>
                     Stop: {this.props.client.seq}
@@ -163,6 +166,9 @@ Client = React.createClass({
       case 'complete':
         return (
           <div>
+            <div className='col-xs-12'>
+                  <hr />
+              </div>
             <div className='complete col-xs-12'>
                 <div className='col-xs-6 col-sm-3 col-md-2'>
                     Stop: {this.props.client.seq}
@@ -226,6 +232,9 @@ Client = React.createClass({
       default:
         return(     
           <div>
+              <div className='col-xs-12'>
+                  <hr />
+              </div>
               <div className='col-xs-6 col-sm-3 col-md-2'>
                   Stop: {this.props.client.seq}
               </div>
@@ -276,9 +285,6 @@ Client = React.createClass({
                   <button className='btn button' name='complete' value={this.props.client._id} onClick={this.updateDeliveryStatus}>
                       Complete
                   </button>
-              </div>
-              <div className='col-xs-12'>
-                  <hr />
               </div>
         </div>
       );
