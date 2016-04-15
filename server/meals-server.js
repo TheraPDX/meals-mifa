@@ -55,9 +55,8 @@ Meteor.methods({
       		throw new Meteor.Error('not-authorized');
     	};
 		// do this because mongo can't handle a simple update with a key like every other database ever... boo...
-		var ObjectID = require('mongodb').ObjectID;
-		var stupidMongoId = ObjectID.createFromHexString(clientID);
-		Clients.update({ _id: stupidMongoId}, {
+		//var ObjectID = require('mongodb').ObjectID;
+		Clients.update({ _id: clientID}, {
 				$set: {deliveryStatus: outcome,
 						updatedBy: emailAddress}
 		})

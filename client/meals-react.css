@@ -16,7 +16,23 @@ html {
   color: #fff;
 }
 /*menu styles */
+.nothome{
+  background-image: url("redx.png");
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 15%;
+  background-color: #D3D3D3;
+  border-radius: 10px;
+}
 
+.complete{
+  background-image: url("checkmark.png");
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 15%;
+  background-color: #D3D3D3;
+  border-radius: 10px;
+}
 /* if using a sticky nav, use this to add space above anchor links to go below navbar */
 *:target:before {
   display: block;
