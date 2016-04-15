@@ -1,4 +1,3 @@
-var Tget = Meteor.wrapAsync(HTTP.get)
 forbidClientAccountCreation: true; 
 //manage account creation
 
@@ -134,6 +133,7 @@ Meteor.methods({
 
         console.log(jsonUrl);
 		//get the optimized waypoints
+		var Tget = Meteor.wrapAsync(HTTP.get)
 		var arrWayPoints = Tget(jsonUrl).data.routes[0].waypoint_order
 		
 		//loop through google's optimized way point and update the sequence in the DB
@@ -191,6 +191,7 @@ Meteor.methods({
 	        			meal1: client.meal1,
 	        			meal2: client.meal2,
 	        			beverage: client.beverage,
+	        			instructions: client.instructions,
 	        			delivered: false,
 					    uploadedBy: Meteor.user().emails[0].address,
 					    uploadedOn: new Date()
