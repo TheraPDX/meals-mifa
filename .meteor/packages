@@ -22,7 +22,6 @@ http
 check
 accounts-ui
 accounts-password
-react
 standard-minifier-css
 standard-minifier-js
 browser-policy
@@ -30,3 +29,4 @@ alanning:roles
 email
 harrison:papa-parse
 dburles:google-maps
+react
