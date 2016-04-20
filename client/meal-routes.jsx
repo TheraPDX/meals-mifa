@@ -6,7 +6,10 @@ MealRoutes = React.createClass({
   let subscription = Meteor.subscribe( 'routes' );
     return {
       isLoading: !subscription.ready(),
-      routes: Routes.find().fetch()
+      routes: Routes.find(
+        {},
+        {sort:{authorizedroute: 1}, reactive:true}
+      ).fetch()
     };
   },
   render() {

@@ -7,13 +7,13 @@ Meteor.publish( 'clients', function(thisRoute){
 
     //get email address
     var user = Meteor.users.findOne(this.userId);
-    //check if they can see routes:
+    //check if they can see this route before filling data:
     var myRoutes = Routes.find(
     	{
     		email: user.emails[0].address
 		},
 		{
-			authorizedRoute: parseInt(thisRoute)
+			authorizedroute: parseInt(thisRoute)
 		}
 	).fetch();
     
@@ -28,7 +28,7 @@ Meteor.publish( 'clients', function(thisRoute){
        		}
 
    	)}else{
-          //throw 401 exception
+          this.ready();
         };
 });
 
@@ -41,8 +41,9 @@ Meteor.publish( 'routes', function(){
     return Routes.find(
       {
         email: user.emails[0].address
-      });
-
+      },
+      {sort:{authorizedroute: 1}, reactive:true}
+    );
 });
 
 Meteor.publish("usersForRoute", function () {

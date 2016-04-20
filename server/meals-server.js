@@ -133,21 +133,25 @@ Meteor.methods({
 
         console.log(jsonUrl);
 		//get the optimized waypoints
-		var Tget = Meteor.wrapAsync(HTTP.get)
-		var arrWayPoints = Tget(jsonUrl).data.routes[0].waypoint_order
-		
-		//loop through google's optimized way point and update the sequence in the DB
-		
-		i = 0;
+		//var Tget = Meteor.wrapAsync(HTTP.get)
+		//var arrWayPoints = Tget(jsonUrl).data.routes[0].waypoint_order
 
-		while (i<arrWayPoints.length) {
-    	//save the new sequence ids to the mongodb
-			Clients.update(clients[i]._id, {
-				$set: {seq: arrWayPoints[i]+1}
-			
-			});
-				i++;
+		//call goodle
+		//
+		HTTP.get(jsonUrl, {}, function(error, response){
+			if(error){
+				throw new Meteor.Error('500', error.reason);
+			}else{
+				let arrWayPoints = response.data.routes[0].waypoint_order;
+				for (let x = 0; x < arrWayPoints.length; x++) {
+    				//save the new sequence ids to the mongodb
+					console.log('Updating ' + clients[x].seq + ' to ' + (parseInt(arrWayPoints[x])+1));
+					Clients.update(clients[x]._id, {
+						$set: {seq: (parseInt(arrWayPoints[x])+1)}
+					});
+				}
 			}
+		});		
     }
 });
 
@@ -176,6 +180,10 @@ Meteor.methods({
         	//now insert all new clients
         	for (let i=0; i < clientsArray.length; i++){
         		let client=clientsArray[i];
+        		//encode polyline
+
+
+
         		if(client.route){
 	        		Clients.insert({
 	        			route: parseInt(client.route),
