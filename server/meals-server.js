@@ -143,9 +143,8 @@ Meteor.methods({
 				let arrWayPoints = response.data.routes[0].waypoint_order;
 				for (let x = 0; x < arrWayPoints.length; x++) {
     				//save the new sequence ids to the mongodb
-					console.log('Updating ' + clients[x].seq + ' to ' + (parseInt(arrWayPoints[x])+1));
-					Clients.update(clients[x]._id, {
-						$set: {seq: (parseInt(arrWayPoints[x])+1)}
+					Clients.update(clients[parseInt(arrWayPoints[x])]._id, {
+						$set: {seq: x+1}
 					});
 				}
 			}
