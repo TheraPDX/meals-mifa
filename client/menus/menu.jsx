@@ -25,7 +25,8 @@ MealsMenu = React.createClass({
                     <Menu width={ 200 } right>
                         <a id="routes" className="h3" href="/routes">My Routes</a>
                         <a id="profile" className="h3" href="/manage-profile">My Profile</a>
-                        <a id="profile" className="h3" href="/manage-routes">Manage Routes</a>
+                        <a id="map" className="h3" href="/map-view">View Map</a>
+                        <a id="routes" className="h3" href="/manage-routes">Manage Routes</a>
                         <a id="contact" className="h3" href="/import-clients">Import Clients</a>
                         <a id="logout" className="h3" href="/logout">Logout</a>
                         <a id="contact" className="h3" href="/about">About</a>

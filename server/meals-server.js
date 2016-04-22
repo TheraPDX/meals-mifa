@@ -1,5 +1,6 @@
 forbidClientAccountCreation: true; 
 //manage account creation
+GeoCache = new Mongo.Collection("geocache");
 
 Meteor.methods({
 	addToAdminGroup: function(){
@@ -140,12 +141,17 @@ Meteor.methods({
 			if(error){
 				throw new Meteor.Error('500', error.reason);
 			}else{
-				let arrWayPoints = response.data.routes[0].waypoint_order;
-				for (let x = 0; x < arrWayPoints.length; x++) {
-    				//save the new sequence ids to the mongodb
-					Clients.update(clients[parseInt(arrWayPoints[x])]._id, {
-						$set: {seq: x+1}
-					});
+				try{
+					let arrWayPoints = response.data.routes[0].waypoint_order;
+					for (let x = 0; x < arrWayPoints.length; x++) {
+	    				//save the new sequence ids to the mongodb
+						Clients.update(clients[parseInt(arrWayPoints[x])]._id, {
+							$set: {seq: x+1}
+						});
+					}
+				}
+				catch(error){
+					throw new Meteor.Error('500', error.reason);
 				}
 			}
 		});		
@@ -166,9 +172,10 @@ Meteor.methods({
 Meteor.methods({
     reloadClients: function(clientsArray){
     	check(clientsArray, Array);
+    	//Collection to hold authorized routes
         if(!Roles.userIsInRole(this.userId, 'admin')){
         	console.log('kicked out')
-            return false;
+            throw new Meteor.Error('401', 'Unauthorized');
         }else{
         	//first archive current collection in history
 
@@ -177,38 +184,28 @@ Meteor.methods({
         	//now insert all new clients
         	for (let i=0; i < clientsArray.length; i++){
         		let client=clientsArray[i];
-        		//encode polyline
+        		
 
-
-
-        		if(client.route){
-	        		Clients.insert({
-	        			route: parseInt(client.route),
-	        			fname: client.fname,
-	        			lname: client.lname,
-	        			address: client.address,
-	        			city: client.city,
-	        			state: client.state,
-	        			zip: client.zip,
-	        			home: client.home,
-	        			mobile: client.mobile,
-	        			seq: parseInt(client.seq),
-	        			meal1: client.meal1,
-	        			meal2: client.meal2,
-	        			beverage: client.beverage,
-	        			instructions: client.instructions,
-	        			delivered: false,
-					    uploadedBy: Meteor.user().emails[0].address,
-					    uploadedOn: new Date()
-
-	        		})
-	        	}
+        		//GEO CODING
+        		//check cache table to see if address has previously been geocoded (helps with the 2500 / day API limit)
+    			let cacheArray = GeoCache.find({address: client.address}).fetch();
+    			if (cacheArray.length==0){
+    				//not found 0 go geocode it
+    				//client.route checks for empty rows in the CSV import
+    				if(client.route){
+    					client.geoCoordinates=geoCodeAddress(client);
+    					saveClient(client);
+    				}
+    			}else{
+    				console.log(cacheArray);
+    				client.geoCoordinates=cacheArray[0].geoCoordinates;
+    				client.geoCodePrecision=cacheArray[0].geoCodePrecision;
+    				saveClient(client);
+				}
         	}
     	}
     }
 });
-
-    				
 
 Meteor.methods({
     addUserToRoute: function(userId, route){
@@ -257,3 +254,83 @@ Meteor.methods({
 		}
     }
 });
+
+//SERVER ONLY FUNCTIONS//
+geoCodeAddress = function(client){
+	//construct url
+	let jsonUrl= "";
+	jsonUrl += encodeURIComponent(client.address) + ',' + client.zip;
+	
+	//get the API key
+	let envKey = process.env.GMAP_KEY;
+	if (typeof(envKey) == 'undefined') {
+	  throw new Meteor.Error('500', 'Google Maps API Key has not been configured on this server.');
+	}
+    jsonUrl += "&key=" + envKey
+
+    //this is the url for calling the webservice
+    let jsonRoot= 'https://maps.googleapis.com/maps/api/geocode/json?address=';
+    jsonUrl = jsonRoot + jsonUrl
+    console.log(jsonUrl);
+
+    var response = HTTP.get(jsonUrl);
+    console.log(response.data);
+	try{
+		//if status is ok, grab these values
+		if(response.data.status=='OK'){
+			client.geoCoordinates=response.data.results[0].geometry.location.lat +',' + response.data.results[0].geometry.location.lng;
+			//if we got the partial match flag, let's record it so NPO can do cleanup.
+			if(response.data.results[0].partial_match){
+				client.geoCodePrecision='Partial Match';
+			}else{
+				client.geoCodePrecision='Match';
+			}
+
+			//geocache the results so we don't have to look this address up every time
+
+			GeoCache.insert({
+				address: client.address,
+				geoCoordinates: client.geoCoordinates,
+				geoCodePrecision: client.geoCodePrecision,
+			    uploadedBy: Meteor.user().emails[0].address,
+			    uploadedOn: new Date()
+			})
+			return client.geoCoordinates;
+		}else{
+			//if we don't get anything back from the geocoder, return the client so the insert can continue
+			//this is likely because we're reached the API limit. 
+			return '';
+		}
+	}
+	catch(error){
+		console.log(error);
+		throw new Meteor.Error('500', error.message);
+	}
+}
+
+saveClient = function(client){
+	//make sure this call can only come from server by checking connection
+	if(client.route){
+		Clients.insert({
+			route: parseInt(client.route),
+			fname: client.fname,
+			lname: client.lname,
+			address: client.address,
+			city: client.city,
+			state: client.state,
+			zip: client.zip,
+			home: client.home,
+			mobile: client.mobile,
+			seq: parseInt(client.seq),
+			meal1: client.meal1,
+			meal2: client.meal2,
+			beverage: client.beverage,
+			instructions: client.instructions,
+			delivered: false,
+			geoCoordinates: client.geoCoordinates,
+			geoCodePrecision: client.geoCodePrecision,
+		    uploadedBy: Meteor.user().emails[0].address,
+		    uploadedOn: new Date()
+		});
+	}
+}

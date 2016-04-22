@@ -16,9 +16,10 @@ MealsMap = React.createClass({
     };
   },
   render() {
-    if (this.data.loaded)
+    if (this.data.loaded){
       return <GoogleMap name="mymap" options={this.data.mapOptions} />;
-
-    return <div>Loading map...</div>;
+    }else{
+      return <div>Loading map...</div>;
+    }
   }
 });

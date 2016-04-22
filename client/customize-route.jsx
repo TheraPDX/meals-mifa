@@ -26,7 +26,7 @@ CustomizeRoute = React.createClass({
 
 	handleSubmit(event){
 	    event.preventDefault();
-           
+		this.data.isLoading=true;           
 		//set origin address
 		var start;
 		var startOption = $('[name="rdStart"]:checked').val();
@@ -82,9 +82,12 @@ CustomizeRoute = React.createClass({
 		Meteor.call("optimizeRoute", parseInt(this.props.id), start, destination, function(error, result){
 			if(error){
 				Bert.alert('Error Optimizing Route:' + error.reason, 'danger');
+				this.data.isLoading=false;
 			}else{
 				Bert.alert('Your route has been optimized.', 'success', 'growl-top-left');
+				this.data.isLoading=false;
 			}
+				
 		});
 		FlowRouter.go('/clients/' + this.props.id);
 	},
