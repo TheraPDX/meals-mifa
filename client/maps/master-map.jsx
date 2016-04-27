@@ -1,7 +1,7 @@
 MasterMap = React.createClass({
   mixins: [ReactMeteorData],
   componentDidMount() {
-    GoogleMaps.load();
+  GoogleMaps.load({ v: '3', key: 'AIzaSyDEvQVPOEpw8nI1r2sYlaU5dmt7FngPafI', libraries: 'geometry,places' });
   },
   getMeteorData() {
     return {
