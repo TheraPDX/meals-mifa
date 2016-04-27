@@ -1,35 +1,38 @@
 Meteor.publish( 'clients', function(thisRoute){
   check( thisRoute, Number);
-    if (!this.userId) {
-        this.ready();
-        return;
-    }
+  if (!this.userId) {
+      this.ready();
+      return;
+  }
 
-    //get email address
-    var user = Meteor.users.findOne(this.userId);
-    //check if they can see this route before filling data:
+  //get email address
+  var user = Meteor.users.findOne(this.userId);
+  //check to see if admin. If admin and thisRoute = 0, then show full client list
+  if ((Roles.userIsInRole(this.userId, 'admin')) && (thisRoute==0)){
+    return Clients.find({});
+  }else{
+  //check if they can see this route before filling data:
     var myRoutes = Routes.find(
-    	{
-    		email: user.emails[0].address
-		},
-		{
-			authorizedroute: parseInt(thisRoute)
-		}
-	).fetch();
+      {
+        email: user.emails[0].address
+      },
+      {
+        authorizedroute: parseInt(thisRoute)
+      }).fetch();
     
     //make sure the above function returned a row
     if(myRoutes.length > 0){
-       	return Clients.find(
-        	{                                      
-           		route: thisRoute
-        	}, 
-        	{ 
-           		sort: { seq: 1} 
-       		}
-
-   	)}else{
+      return Clients.find(
+        {                                      
+            route: thisRoute
+        }, 
+        { 
+            sort: { seq: 1} 
+        })
+    }else{
           this.ready();
-        };
+    };
+  }
 });
 
 Meteor.publish( 'routes', function(){

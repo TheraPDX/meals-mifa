@@ -1,7 +1,14 @@
 html {
   font-size: 18px;
 }
-.map-container {
+.master-map-container {
+  width:100%;
+  height:100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.route-map-container {
   width: 800px;
   max-width: 100%;
   height: 500px;

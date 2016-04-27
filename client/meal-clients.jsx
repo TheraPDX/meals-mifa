@@ -48,15 +48,18 @@ MealClients = React.createClass({
               <p>You can start deliverying your route with turn by turn directions by tapping the address of each client. 
               To optimize your route to start or finish in a location different from MIFA's default, tap the 'Customize my Route' button.</p>
             </div>
-            <div className='col-xs-12 map-container'>
-              <RouteMap routeId={this.props.id}/>
-            </div>
             <div className="col-xs-12 paddedDiv">
                 <button className='btn button' onClick={this.optimizeRoute}>Customize my Route</button> 
             </div>
             <div className='form-group'>
               <br />
                 <ClientTable clients={this.data.clients} />
+            </div>
+            <div className="col-xs-12 paddedDiv">
+                <hr />
+            </div> 
+            <div className='col-xs-12 map-container'>
+              <RouteMap routeId={this.props.id}/>
             </div>
           </div>
         );

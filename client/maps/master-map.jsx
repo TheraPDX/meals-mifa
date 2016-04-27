@@ -17,13 +17,13 @@ MasterMap = React.createClass({
   },
   render() {
     if (this.data.loaded)
-      return <GoogleMap name="mymap" options={this.data.mapOptions} />;
+      return <GoogleMasterMap name="mastermap" options={this.data.mapOptions} />;
 
     return <div>Loading map...</div>;
   }
 });
 
-GoogleMap = React.createClass({
+GoogleMasterMap = React.createClass({
   
   propTypes: {
     name: React.PropTypes.string.isRequired,
@@ -31,7 +31,7 @@ GoogleMap = React.createClass({
   },  
   mixins: [ ReactMeteorData ],
   getMeteorData() {
-    let subscription = Meteor.subscribe( 'clients', 35 );
+    let subscription = Meteor.subscribe( 'clients', 0);
     return {
         isLoading: !subscription.ready(),
     };
@@ -42,32 +42,33 @@ GoogleMap = React.createClass({
       element: ReactDOM.findDOMNode(this),
       options: this.props.options
     });
-
+    
     GoogleMaps.ready(this.props.name, function(map) {
+      var bounds = new google.maps.LatLngBounds();
+      var markers = {};
+      var animationOption;
       Clients.find().forEach(
         function(document){
           var myLatlng = new google.maps.LatLng(document.geoLat, document.geoLng);
-
           var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
-
-          console.log(document.deliveryStatus);
           switch(document.deliveryStatus){
               
           case 'complete':
-            var pinColor = "004C00";
+            var pinColor = "4ef84e";
             var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
                 new google.maps.Size(21, 34),
                 new google.maps.Point(0,0),
                 new google.maps.Point(10, 34));
-              break;
-            
+            animationOption = google.maps.Animation.DROP;
+            break;
+              
           case 'nothome':
             var pinColor = "e70935";
             var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
                 new google.maps.Size(21, 34),
                 new google.maps.Point(0,0),
                 new google.maps.Point(10, 34));
-              break;
+            animationOption = google.maps.Animation.DROP;
             break;
 
           default:
@@ -76,18 +77,92 @@ GoogleMap = React.createClass({
                 new google.maps.Size(21, 34),
                 new google.maps.Point(0,0),
                 new google.maps.Point(10, 34));
+            animationOption = google.maps.Animation.DROP;
+
           }
           var marker = new google.maps.Marker({
             draggable: false,
-            animation: google.maps.Animation.DROP,
+            animation: animationOption,
             position: myLatlng,
             map: map.instance,
             id: document._id,
             title: 'Route ' + document.route + ': Stop ' + document.seq,
             icon: pinImage
-          });  
+          });
+            //var info_window = get_info_window();
+            var info_window = new google.maps.InfoWindow();
+            marker.set('address', document.address);
+            marker.set('name', document.fname + ' ' + document.lname);
+            marker.addListener('click', function() {
+              info_window.setContent(this.get('name') + '<br />' + this.get('address'));
+              info_window.open(map.instance, this);
+              setTimeout(function () { info_window.close(); }, 5000);
+            });
+          markers[document._id] = marker;
+          bounds.extend(marker.position);  
+          map.instance.fitBounds(bounds); 
         }
-      )  
+      )
+      Clients.find().observe({  
+        changed: function(document, oldDocument) {
+        //remove marker
+        markers[oldDocument._id].setMap(null);
+
+
+        //re add w/ appropriate color
+        var myLatlng = new google.maps.LatLng(document.geoLat, document.geoLng);
+        var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+        var animationOption;
+          switch(document.deliveryStatus){
+              
+          case 'complete':
+            var pinColor = "4ef84e";
+            var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+                new google.maps.Size(21, 34),
+                new google.maps.Point(0,0),
+                new google.maps.Point(10, 34));
+              animationOption = google.maps.Animation.DROP;
+              break;
+              
+          case 'nothome':
+            var pinColor = "e70935";
+            var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+                new google.maps.Size(21, 34),
+                new google.maps.Point(0,0),
+                new google.maps.Point(10, 34));
+              animationOption = google.maps.Animation.DROP;
+              break;
+
+          default:
+            var pinColor = "FFFFFF";
+            var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+                new google.maps.Size(21, 34),
+                new google.maps.Point(0,0),
+                new google.maps.Point(10, 34));
+            animationOption = google.maps.Animation.DROP;
+            }
+            
+          var marker = new google.maps.Marker({
+            draggable: false,
+            animation: animationOption,
+            position: myLatlng,
+            map: map.instance,
+            id: document._id,
+            title: 'Route ' + document.route + ': Stop ' + document.seq,
+            icon: pinImage
+          });
+            //var info_window = get_info_window();
+            var info_window = new google.maps.InfoWindow();
+            marker.set('address', document.address);
+            marker.set('name', document.fname + ' ' + document.lname);
+            marker.addListener('click', function() {
+              info_window.setContent(this.get('name') + '<br />' + this.get('address'));
+              info_window.open(map.instance, this);
+              setTimeout(function () { info_window.close(); }, 5000);
+            });
+          markers[document._id] = marker;
+        }
+      });
     });
   },
   
@@ -98,6 +173,6 @@ GoogleMap = React.createClass({
     } 
   },
   render() {
-    return <div className="map-container"></div>;
+    return <div className="master-map-container"></div>;
   }
 });
