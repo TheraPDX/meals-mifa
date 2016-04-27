@@ -39,6 +39,9 @@ hr {
     width: auto; 
     max-height: 50px;
 }
+.map-container {
+  height: 250px;
+}
 .settingsIcon{
     height: auto; 
     width: auto; 

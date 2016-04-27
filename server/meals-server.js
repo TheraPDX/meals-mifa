@@ -193,12 +193,13 @@ Meteor.methods({
     				//not found 0 go geocode it
     				//client.route checks for empty rows in the CSV import
     				if(client.route){
-    					client.geoCoordinates=geoCodeAddress(client);
+    					client = geoCodeAddress(client);
     					saveClient(client);
     				}
     			}else{
     				console.log(cacheArray);
-    				client.geoCoordinates=cacheArray[0].geoCoordinates;
+    				client.geoLat=cacheArray[0].geoLat;
+    				client.geoLng=cacheArray[0].geoLong;
     				client.geoCodePrecision=cacheArray[0].geoCodePrecision;
     				saveClient(client);
 				}
@@ -278,7 +279,8 @@ geoCodeAddress = function(client){
 	try{
 		//if status is ok, grab these values
 		if(response.data.status=='OK'){
-			client.geoCoordinates=response.data.results[0].geometry.location.lat +',' + response.data.results[0].geometry.location.lng;
+			client.geoLat =response.data.results[0].geometry.location.lat
+			client.geoLng = response.data.results[0].geometry.location.lng;
 			//if we got the partial match flag, let's record it so NPO can do cleanup.
 			if(response.data.results[0].partial_match){
 				client.geoCodePrecision='Partial Match';
@@ -290,16 +292,17 @@ geoCodeAddress = function(client){
 
 			GeoCache.insert({
 				address: client.address,
-				geoCoordinates: client.geoCoordinates,
+				geoLat: client.geoLat,
+				geoLong: client.geoLng,
 				geoCodePrecision: client.geoCodePrecision,
 			    uploadedBy: Meteor.user().emails[0].address,
 			    uploadedOn: new Date()
 			})
-			return client.geoCoordinates;
+			return client;
 		}else{
 			//if we don't get anything back from the geocoder, return the client so the insert can continue
 			//this is likely because we're reached the API limit. 
-			return '';
+			return client;
 		}
 	}
 	catch(error){
@@ -327,7 +330,8 @@ saveClient = function(client){
 			beverage: client.beverage,
 			instructions: client.instructions,
 			delivered: false,
-			geoCoordinates: client.geoCoordinates,
+			geoLat: client.geoLat,
+			geoLng: client.geoLng,
 			geoCodePrecision: client.geoCodePrecision,
 		    uploadedBy: Meteor.user().emails[0].address,
 		    uploadedOn: new Date()

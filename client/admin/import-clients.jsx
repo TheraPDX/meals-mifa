@@ -84,7 +84,7 @@ FileForm = React.createClass({
         //Pass the json array into the server
         Meteor.call('reloadClients', results.data, function(error, result){
           if(error){
-            Bert.alert('Error Optimizing Route:' + error.reason);
+            Bert.alert('Error Uploading Clients:' + error.reason);
           }else{
             Bert.alert('All clients have been replaced', 'success', 'growl-top-left');
           }
