@@ -117,4 +117,13 @@ allowAuthenticated.route('/map-view', {
         ReactLayout.render(MainLayout, { content: <MapView /> });
     }
 });
-
+allowAuthenticated.route('/manage-users', {
+    action: function(params, queryParams) {
+        ReactLayout.render(MainLayout, { content: <ManageUsers /> });
+    }
+});
+allowAuthenticated.route('/manage-user/:userId', {
+    action: function(params, queryParams) {
+        ReactLayout.render(MainLayout, { content: <ManageUser userId={params.userId}/> });
+    }
+});

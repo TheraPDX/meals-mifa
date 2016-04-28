@@ -66,7 +66,7 @@ ManageRouteItem = React.createClass({
 
     return (
     <div className="col-xs-4 col-sm-3 col-md-2 col-lg-1 paddedDiv">
-      <button value={this.props.routesToManage.route} className='btn btn-success form-control' onClick={this.goManageRoute}>
+      <button value={this.props.routesToManage.route} className='button' onClick={this.goManageRoute}>
         {this.props.routesToManage.route}
       </button>
     </div>

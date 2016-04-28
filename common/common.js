@@ -4,9 +4,8 @@ Routes = new Mongo.Collection("routes");
 Clients = new Mongo.Collection("clients");
 //Collection to hold all routes in system - only contains data for admins
 RouteMaster = new Mongo.Collection("routesMaster");
-//Collection to hold all clients in system to show on map- only contains data for admins
-//ClientMaster = new Mongo.Collection("clients");
 
+//ClientMaster = new Mongo.Collection("clients");
 //static MIFA Address Info
 mifaAddress = "910 Vance Ave"
 mifaZip = "38126";

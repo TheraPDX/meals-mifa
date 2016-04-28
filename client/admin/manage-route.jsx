@@ -36,7 +36,7 @@ ManageRoute = React.createClass({
             </div>
             <div className='form-group'>
               <br />
-                <ManageUserList usersForRoute={this.data.usersForRoute} routeId={this.props.id}/>
+                <ManageUserListForRoute usersForRoute={this.data.usersForRoute} routeId={this.props.id}/>
             </div>
           </div>  
           </span>
@@ -47,12 +47,12 @@ ManageRoute = React.createClass({
 });
 
 
-ManageUserList = React.createClass({
+ManageUserListForRoute = React.createClass({
   render() {
     return (
       <div className='form-group'>
             {this.props.usersForRoute.map( ( _id, index ) => {
-              return <ManageUserItem key={index} usersForRoute={_id} routeId={this.props.routeId}/>;
+              return <ManageUserItemForRoute key={index} usersForRoute={_id} routeId={this.props.routeId}/>;
             })}
       </div>
     );
@@ -62,7 +62,7 @@ ManageUserList = React.createClass({
 
 
 
-ManageUserItem = React.createClass({
+ManageUserItemForRoute = React.createClass({
     updateUser(event){
       event.preventDefault();
       //if the box is now checked, add the route

@@ -57,10 +57,10 @@ RecoverPassword = React.createClass({
                   <input type='email' name='emailAddress' className='form-control' placeholder='Email Address' />
                 </div>
                 <div className='form-group'>
-                  <input type='submit' className='btn btn-success pull-right' value='Recover Password' />
+                  <input type='submit' className='button pull-right' value='Recover Password' />
                 </div>
                 <div className='form-group'>
-                  <input type='submit' name='cancelButton' className='btn btn-success pull-left' value='Cancel' />
+                  <input type='submit' name='cancelButton' className='button pull-left' value='Cancel' />
                 </div>
               </form>
             </div>

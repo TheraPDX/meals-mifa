@@ -3,12 +3,23 @@ forbidClientAccountCreation: true;
 GeoCache = new Mongo.Collection("geocache");
 
 Meteor.methods({
-	addToAdminGroup: function(){
-		if (! Meteor.userId()) {
-      		throw new Meteor.Error('not-authorized');
-    	};
-		if (Meteor.user()){
-			Roles.addUsersToRoles(Meteor.userId(), ['admin'])
+	addToAdminGroup: function(userId){
+        if(!Roles.userIsInRole(this.userId, 'admin')){
+        	console.log('kicked out')
+            throw new Meteor.Error('401', 'Unauthorized');
+    	}else{
+			Roles.addUsersToRoles(userId, ['admin'])
+		}
+	}
+});
+
+Meteor.methods({
+	removeFromAdminGroup: function(userId){
+        if(!Roles.userIsInRole(this.userId, 'admin')){
+        	console.log('kicked out')
+            throw new Meteor.Error('401', 'Unauthorized');
+    	}else{
+			Roles.removeUsersFromRoles(userId, ['admin'])
 		}
 	}
 });

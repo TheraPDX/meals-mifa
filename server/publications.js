@@ -1,3 +1,13 @@
+Meteor.publish("directory", function () {
+  var user = Meteor.users.findOne(this.userId);
+  if (Roles.userIsInRole(this.userId, 'admin')){
+    return Meteor.users.find({});
+  }else{
+    return this.ready();
+  }
+});
+
+
 Meteor.publish( 'clients', function(thisRoute){
   check( thisRoute, Number);
   if (!this.userId) {

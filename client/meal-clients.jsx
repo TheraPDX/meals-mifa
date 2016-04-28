@@ -49,7 +49,7 @@ MealClients = React.createClass({
               To optimize your route to start or finish in a location different from MIFA's default, tap the 'Customize my Route' button.</p>
             </div>
             <div className="col-xs-12 paddedDiv">
-                <button className='btn button' onClick={this.optimizeRoute}>Customize my Route</button> 
+                <button className='button' onClick={this.optimizeRoute}>Customize my Route</button> 
             </div>
             <div className='form-group'>
               <br />
