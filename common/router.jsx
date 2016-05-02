@@ -4,7 +4,19 @@ FlowRouter.notFound = {
     ReactLayout.render(MainLayout, { content: <Error404 /> });
   }
 }
-
+FlowRouter.route( '/verify-email/:token', {
+  name: 'verify-email',
+  action( params ) {
+    Accounts.verifyEmail( params.token, ( error ) =>{
+      if ( error ) {
+        Bert.alert( error.reason, 'danger' );
+      } else {
+        FlowRouter.go( '/' );
+        Bert.alert( 'Email verified! Thanks!', 'success' );
+      }
+    });
+  }
+});
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //unautheniticated links
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

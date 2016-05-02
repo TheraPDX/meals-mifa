@@ -32,7 +32,7 @@ ManageRoute = React.createClass({
           <span>
           <div className="row">
             <div className="form-group">
-              <h4 className="page-header">Manage Users for Route</h4>
+              <h4 className="page-header">{'Manage Users for Route: ' + this.props.id}</h4>
             </div>
             <div className='form-group'>
               <br />

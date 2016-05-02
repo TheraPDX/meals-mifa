@@ -96,7 +96,7 @@ ManageRouteListForUser = React.createClass({
     return (
       <div className='form-group'>
             {this.props.routesForUser.map( ( route, index ) => {
-              return <ManageUserItemForRoute key={index} routesForUser={route} userId={this.props.userId}/>;
+              return <ManageRouteItemForUser key={index} routesForUser={route} userId={this.props.userId}/>;
             })}
       </div>
     );
@@ -106,7 +106,7 @@ ManageRouteListForUser = React.createClass({
 
 
 
-ManageUserItemForRoute = React.createClass({
+ManageRouteItemForUser = React.createClass({
     toggleRoute(event){
       event.preventDefault();
       //if the box is now checked, add the route

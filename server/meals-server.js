@@ -1,4 +1,21 @@
+//Account settings
 forbidClientAccountCreation: true; 
+Accounts.emailTemplates.siteName = "MIFA Meals Companion";
+Accounts.emailTemplates.from     = "Admin <mwdavisii@mikesplaysite.com>";
+
+Accounts.emailTemplates.verifyEmail = {
+  subject() {
+    return "[Mifa Meals Companion] Verify Your Email Address";
+  },
+  text( user, url ) {
+    let emailAddress   = user.emails[0].address,
+        urlWithoutHash = url.replace( '#/', '' ),
+        supportEmail   = "mwdavisii@mikesplaysite.com",
+        emailBody      = `To verify your email address (${emailAddress}) visit the following link:\n\n${urlWithoutHash}\n\n If you did not request this verification, please ignore this email. If you feel something is wrong, please contact our support team: mwdavisii@gmail.com.`;
+
+    return emailBody;
+  }
+};
 //manage account creation
 GeoCache = new Mongo.Collection("geocache");
 
@@ -25,7 +42,6 @@ Meteor.methods({
 });
 
 Accounts.onCreateUser(function(options, user) {
-   check(options, Array);
    check(user, Object);
    // Use provided profile in options, or create an empty object
    user.profile = options.profile || {};
@@ -77,10 +93,7 @@ Meteor.methods({
 		check(firstName, String);
 		check(lastName, String);
 		check(phoneNumber, String);
-		check(password, String);
-      	if (! Meteor.userId()) {
-      		throw new Meteor.Error('not-authorized');
-    	};
+		check(password, Object);
       	var phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
       	phoneNumber = phoneNumber.replace(phoneRegex, "($1) $2-$3");
       	Accounts.createUser({
@@ -89,7 +102,8 @@ Meteor.methods({
 	        lastName: lastName,
 	        phoneNumber: phoneNumber,
 	        password: password});
-    }      
+    		}      
+    	//Accounts.sendVerificationEmail( user._id );
 });
 
 Meteor.methods({
