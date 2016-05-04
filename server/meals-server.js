@@ -224,7 +224,7 @@ Meteor.methods({
     			}else{
     				console.log(cacheArray);
     				client.geoLat=cacheArray[0].geoLat;
-    				client.geoLng=cacheArray[0].geoLong;
+    				client.geoLng=cacheArray[0].geoLng;
     				client.geoCodePrecision=cacheArray[0].geoCodePrecision;
     				saveClient(client);
 				}
@@ -318,7 +318,7 @@ geoCodeAddress = function(client){
 			GeoCache.insert({
 				address: client.address,
 				geoLat: client.geoLat,
-				geoLong: client.geoLng,
+				geoLng: client.geoLng,
 				geoCodePrecision: client.geoCodePrecision,
 			    uploadedBy: Meteor.user().emails[0].address,
 			    uploadedOn: new Date()
