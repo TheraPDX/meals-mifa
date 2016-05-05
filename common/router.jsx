@@ -1,9 +1,15 @@
+import React from 'react';
+import {mount} from 'react-mounter';
+
 //errors
 FlowRouter.notFound = {
   action: function () {
-    ReactLayout.render(MainLayout, { content: <Error404 /> });
+    mount(MainLayout, { 
+      content: (<Error404 />) 
+    });
   }
 }
+
 FlowRouter.route( '/verify-email/:token', {
   name: 'verify-email',
   action( params ) {
@@ -25,7 +31,7 @@ allowAny.route('/', {
   action() {
   	//check to see if authenitcated. If so, send them on to routes
     if(!Meteor.userId()){
-      ReactLayout.render(MainLayout, { content: <Login /> });
+      mount(MainLayout, { content: <Login /> });
     }else{
       FlowRouter.go('/routes');
     }
@@ -34,37 +40,37 @@ allowAny.route('/', {
 
 allowAny.route('/validation-landing', {
     action: function(params, queryParams) {
-        ReactLayout.render(MainLayout, { content: <ValidationLanding /> });
+        mount(MainLayout, { content: <ValidationLanding /> });
     }
 });
 
 allowAny.route('/login', {  
   action() {
-    ReactLayout.render(MainLayout, { content: <Login /> });
+    mount(MainLayout, { content: <Login /> });
   }
 });
 
 allowAny.route('/about', {
     action: function(params, queryParams) {
-        ReactLayout.render(MainLayout, { content: <About /> });
+        mount(MainLayout, { content: <About /> });
     }
 });
 
 allowAny.route('/logout', {  
   action() {
-    ReactLayout.render(MainLayout, { content: <Login /> });
+    mount(MainLayout, { content: <Login /> });
     Meteor.logout();
   }
 });
 
 allowAny.route('/signup', {
     action() {
-        ReactLayout.render(MainLayout, { content: <Signup /> });
+        mount(MainLayout, { content: <Signup /> });
     }
 });
 allowAny.route('/recover-password', {
     action() {
-        ReactLayout.render(MainLayout, { content: <RecoverPassword /> });
+        mount(MainLayout, { content: <RecoverPassword /> });
     }
 });
 
@@ -80,25 +86,25 @@ allowAuthenticated = FlowRouter.group({
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 allowAuthenticated.route('/routes', {
     action() {
-        ReactLayout.render(MainLayout, { content: <MealRoutes /> });
+        mount(MainLayout, { content: <MealRoutes /> });
     }
 });
 
 allowAuthenticated.route('/customize-route/:routeId', {
     action: function(params, queryParams) {
-        ReactLayout.render(MainLayout, { content: <CustomizeRoute id={params.routeId}/> });
+        mount(MainLayout, { content: <CustomizeRoute id={params.routeId}/> });
     }
 });
 allowAuthenticated.route('/import-clients', {
     action: function(params, queryParams) {
-        ReactLayout.render(MainLayout, { content: <ImportClients /> });
+        mount(MainLayout, { content: <ImportClients /> });
     }
 });
 
 
 allowAuthenticated.route('/clients/:routeId', {
     action: function(params, queryParams) {
-        ReactLayout.render(MainLayout, { content: <MealClients id={params.routeId}/> });
+        mount(MainLayout, { content: <MealClients id={params.routeId}/> });
     }
 });
 
@@ -106,7 +112,7 @@ allowAuthenticated.route('/clients/:routeId', {
 //admin functions
 allowAuthenticated.route('/manage-profile', {
     action: function(params, queryParams) {
-        ReactLayout.render(MainLayout, { content: <ManageProfile /> });
+        mount(MainLayout, { content: <ManageProfile /> });
     }
 });
 
@@ -114,28 +120,28 @@ allowAuthenticated.route('/manage-profile', {
 // per FlowRouter design specs, we'llm manage access to this in the components themselves to insure roles are loaded.
 allowAuthenticated.route('/manage-routes', {
     action: function(params, queryParams) {
-        ReactLayout.render(MainLayout, { content: <ManageRoutes /> });
+        mount(MainLayout, { content: <ManageRoutes /> });
     }
 });
 
 allowAuthenticated.route('/manage-route/:routeId', {
     action: function(params, queryParams) {
-        ReactLayout.render(MainLayout, { content: <ManageRoute id={params.routeId}/> });
+        mount(MainLayout, { content: <ManageRoute id={params.routeId}/> });
     }
 });
 
 allowAuthenticated.route('/map-view', {
     action: function(params, queryParams) {
-        ReactLayout.render(MainLayout, { content: <MapView /> });
+        mount(MainLayout, { content: <MapView /> });
     }
 });
 allowAuthenticated.route('/manage-users', {
     action: function(params, queryParams) {
-        ReactLayout.render(MainLayout, { content: <ManageUsers /> });
+        mount(MainLayout, { content: <ManageUsers /> });
     }
 });
 allowAuthenticated.route('/manage-user/:userId', {
     action: function(params, queryParams) {
-        ReactLayout.render(MainLayout, { content: <ManageUser userId={params.userId}/> });
+        mount(MainLayout, { content: <ManageUser userId={params.userId}/> });
     }
 });
