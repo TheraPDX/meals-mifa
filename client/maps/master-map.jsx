@@ -50,12 +50,12 @@ GoogleMasterMap = React.createClass({
       Clients.find().forEach(
         function(document){
           var myLatlng = new google.maps.LatLng(document.geoLat, document.geoLng);
-          var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+          //var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
           switch(document.deliveryStatus){
               
           case 'complete':
             var pinColor = "4ef84e";
-            var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+            var pinImage = new google.maps.MarkerImage("/green_peg.png",
                 new google.maps.Size(21, 34),
                 new google.maps.Point(0,0),
                 new google.maps.Point(10, 34));
@@ -64,7 +64,7 @@ GoogleMasterMap = React.createClass({
               
           case 'nothome':
             var pinColor = "e70935";
-            var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+            var pinImage = new google.maps.MarkerImage("/red_peg.png",
                 new google.maps.Size(21, 34),
                 new google.maps.Point(0,0),
                 new google.maps.Point(10, 34));
@@ -73,7 +73,7 @@ GoogleMasterMap = React.createClass({
 
           default:
             var pinColor = "FFFFFF";
-            var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+            var pinImage = new google.maps.MarkerImage("white_peg.png",
                 new google.maps.Size(21, 34),
                 new google.maps.Point(0,0),
                 new google.maps.Point(10, 34));
@@ -116,26 +116,23 @@ GoogleMasterMap = React.createClass({
           switch(document.deliveryStatus){
               
           case 'complete':
-            var pinColor = "4ef84e";
-            var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+            var pinImage = new google.maps.MarkerImage("/green_peg.png",
                 new google.maps.Size(21, 34),
                 new google.maps.Point(0,0),
                 new google.maps.Point(10, 34));
-              animationOption = google.maps.Animation.DROP;
-              break;
+            animationOption = google.maps.Animation.DROP;
+            break;
               
           case 'nothome':
-            var pinColor = "e70935";
-            var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+            var pinImage = new google.maps.MarkerImage("/red_peg.png",
                 new google.maps.Size(21, 34),
                 new google.maps.Point(0,0),
                 new google.maps.Point(10, 34));
-              animationOption = google.maps.Animation.DROP;
-              break;
+            animationOption = google.maps.Animation.DROP;
+            break;
 
           default:
-            var pinColor = "FFFFFF";
-            var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+            var pinImage = new google.maps.MarkerImage("white_peg.png",
                 new google.maps.Size(21, 34),
                 new google.maps.Point(0,0),
                 new google.maps.Point(10, 34));
