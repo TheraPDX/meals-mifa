@@ -51,7 +51,6 @@ GoogleMap = React.createClass({
       Clients.find().forEach(
         function(document){
           var myLatlng = new google.maps.LatLng(document.geoLat, document.geoLng);
-          var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
           switch(document.deliveryStatus){
               
           case 'complete':
@@ -71,7 +70,7 @@ GoogleMap = React.createClass({
             break;
 
           default:
-            var pinImage = new google.maps.MarkerImage("white_peg.png",
+            var pinImage = new google.maps.MarkerImage("/white_peg.png",
                 new google.maps.Size(21, 34),
                 new google.maps.Point(0,0),
                 new google.maps.Point(10, 34));
@@ -130,7 +129,7 @@ GoogleMap = React.createClass({
             break;
 
           default:
-            var pinImage = new google.maps.MarkerImage("white_peg.png",
+            var pinImage = new google.maps.MarkerImage("/white_peg.png",
                 new google.maps.Size(21, 34),
                 new google.maps.Point(0,0),
                 new google.maps.Point(10, 34));
