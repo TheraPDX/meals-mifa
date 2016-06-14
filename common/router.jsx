@@ -1,4 +1,3 @@
-<<<<<<< refs/remotes/origin/master
 import React from 'react';
 import {mount} from 'react-mounter';
 
@@ -24,28 +23,15 @@ FlowRouter.route( '/verify-email/:token', {
     });
   }
 });
-=======
-//errors
-FlowRouter.notFound = {
-  action: function () {
-    ReactLayout.render(MainLayout, { content: <Error404 /> });
-  }
-}
-
->>>>>>> Inital Load
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //unautheniticated links
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 allowAny = FlowRouter.group({});
 allowAny.route('/', {  
   action() {
-  	//check to see if authenitcated. If so, send them on to routes
+    //check to see if authenitcated. If so, send them on to routes
     if(!Meteor.userId()){
-<<<<<<< refs/remotes/origin/master
       mount(MainLayout, { content: <Login /> });
-=======
-      ReactLayout.render(MainLayout, { content: <Login /> });
->>>>>>> Inital Load
     }else{
       FlowRouter.go('/routes');
     }
@@ -54,61 +40,37 @@ allowAny.route('/', {
 
 allowAny.route('/validation-landing', {
     action: function(params, queryParams) {
-<<<<<<< refs/remotes/origin/master
         mount(MainLayout, { content: <ValidationLanding /> });
-=======
-        ReactLayout.render(MainLayout, { content: <ValidationLanding /> });
->>>>>>> Inital Load
     }
 });
 
 allowAny.route('/login', {  
   action() {
-<<<<<<< refs/remotes/origin/master
     mount(MainLayout, { content: <Login /> });
-=======
-    ReactLayout.render(MainLayout, { content: <Login /> });
->>>>>>> Inital Load
   }
 });
 
 allowAny.route('/about', {
     action: function(params, queryParams) {
-<<<<<<< refs/remotes/origin/master
         mount(MainLayout, { content: <About /> });
-=======
-        ReactLayout.render(MainLayout, { content: <About /> });
->>>>>>> Inital Load
     }
 });
 
 allowAny.route('/logout', {  
   action() {
-<<<<<<< refs/remotes/origin/master
     mount(MainLayout, { content: <Login /> });
-=======
-    ReactLayout.render(MainLayout, { content: <Login /> });
->>>>>>> Inital Load
     Meteor.logout();
   }
 });
 
 allowAny.route('/signup', {
     action() {
-<<<<<<< refs/remotes/origin/master
         mount(MainLayout, { content: <Signup /> });
-=======
-        ReactLayout.render(MainLayout, { content: <Signup /> });
->>>>>>> Inital Load
     }
 });
 allowAny.route('/recover-password', {
     action() {
-<<<<<<< refs/remotes/origin/master
         mount(MainLayout, { content: <RecoverPassword /> });
-=======
-        ReactLayout.render(MainLayout, { content: <RecoverPassword /> });
->>>>>>> Inital Load
     }
 });
 
@@ -124,17 +86,12 @@ allowAuthenticated = FlowRouter.group({
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 allowAuthenticated.route('/routes', {
     action() {
-<<<<<<< refs/remotes/origin/master
         mount(MainLayout, { content: <MealRoutes /> });
-=======
-        ReactLayout.render(MainLayout, { content: <MealRoutes /> });
->>>>>>> Inital Load
     }
 });
 
 allowAuthenticated.route('/customize-route/:routeId', {
     action: function(params, queryParams) {
-<<<<<<< refs/remotes/origin/master
         mount(MainLayout, { content: <CustomizeRoute id={params.routeId}/> });
     }
 });
@@ -148,15 +105,6 @@ allowAuthenticated.route('/import-clients', {
 allowAuthenticated.route('/clients/:routeId', {
     action: function(params, queryParams) {
         mount(MainLayout, { content: <MealClients id={params.routeId}/> });
-=======
-        ReactLayout.render(MainLayout, { content: <CustomizeRoute id={params.routeId}/> });
-    }
-});
-
-allowAuthenticated.route('/clients/:routeId', {
-    action: function(params, queryParams) {
-        ReactLayout.render(MainLayout, { content: <MealClients id={params.routeId}/> });
->>>>>>> Inital Load
     }
 });
 
@@ -164,11 +112,7 @@ allowAuthenticated.route('/clients/:routeId', {
 //admin functions
 allowAuthenticated.route('/manage-profile', {
     action: function(params, queryParams) {
-<<<<<<< refs/remotes/origin/master
         mount(MainLayout, { content: <ManageProfile /> });
-=======
-        ReactLayout.render(MainLayout, { content: <ManageProfile /> });
->>>>>>> Inital Load
     }
 });
 
@@ -176,17 +120,12 @@ allowAuthenticated.route('/manage-profile', {
 // per FlowRouter design specs, we'llm manage access to this in the components themselves to insure roles are loaded.
 allowAuthenticated.route('/manage-routes', {
     action: function(params, queryParams) {
-<<<<<<< refs/remotes/origin/master
         mount(MainLayout, { content: <ManageRoutes /> });
-=======
-        ReactLayout.render(MainLayout, { content: <ManageRoutes /> });
->>>>>>> Inital Load
     }
 });
 
 allowAuthenticated.route('/manage-route/:routeId', {
     action: function(params, queryParams) {
-<<<<<<< refs/remotes/origin/master
         mount(MainLayout, { content: <ManageRoute id={params.routeId}/> });
     }
 });
@@ -206,8 +145,3 @@ allowAuthenticated.route('/manage-user/:userId', {
         mount(MainLayout, { content: <ManageUser userId={params.userId}/> });
     }
 });
-=======
-        ReactLayout.render(MainLayout, { content: <ManageRoute id={params.routeId}/> });
-    }
-});
->>>>>>> Inital Load
