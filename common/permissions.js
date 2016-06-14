@@ -11,10 +11,10 @@ Routes.deny({
 });
 
 
-Clients.deny({
-  insert() { return true; },
-  update() { return true; },
-  remove() { return true; }
+Clients.allow({
+  insert() { return false; },
+  update() { return false; },
+  remove() { return false; }
 });
 
 Clients.deny({
