@@ -24,9 +24,9 @@ Clients.deny({
 });
 
 Meteor.users.allow({
-  insert() { return true; },
-  update() { return true; },
-  remove() { return true; }
+  insert() { return false; },
+  update() { return false; },
+  remove() { return false; }
 });
 
 Meteor.users.deny({
